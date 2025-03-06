@@ -1,9 +1,11 @@
 package com.fuel.clientservice;
 
+import com.fuel.fuelservice.FuelType;
 import com.fuel.fuelservice.IFuelService;
 import com.fuel.notificationsservice.INotificationService;
 import com.fuel.notificationsservice.NotificationModel;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import org.osgi.framework.BundleActivator;
@@ -114,51 +116,142 @@ public class ClientActivator implements BundleActivator {
 
     // Add Fuel Type
     private void addFuelType() {
-        System.out.print("🔧 Enter Fuel Type: ");
-        String type = sc.nextLine();
-        System.out.print("💵 Enter Fuel Price: ");
-        double price = sc.nextDouble();
-        System.out.print("⛽ Enter Fuel Quantity: ");
-        double quantity = sc.nextDouble();
-        fuelService.addFuelType(type, price, quantity);
-        System.out.println("✅ Fuel Type added successfully.");
+        FuelType selectedFuelType = null;
+        
+        // Loop until a valid fuel type is entered
+        while (selectedFuelType == null) {
+            System.out.println("🔧 Available Fuel Types:");
+            for (FuelType fuelType : FuelType.values()) {
+                System.out.println("   ➡️ " + fuelType);
+            }
+
+            System.out.print("👉 Select Fuel Type from the list: ");
+            String typeInput = sc.nextLine().toUpperCase();
+
+            // Validate the selected fuel type
+            try {
+                selectedFuelType = FuelType.valueOf(typeInput);
+            } catch (IllegalArgumentException e) {
+                System.out.println("❌ Invalid fuel type! Please select a valid type from the list.");
+            }
+        }
+        
+        // Proceed to get fuel price and quantity
+        double price = getDoubleInput("💵 Enter Fuel Price: ");
+        double quantity = getDoubleInput("⛽ Enter Fuel Quantity: ");
+
+        // Add fuel type
+        fuelService.addFuelType(selectedFuelType.name(), price, quantity);
+        System.out.println("✅ Fuel Type " + selectedFuelType + " added successfully.");
     }
 
-    // Update Fuel Level
+    // Update Fuel Level with validation
     private void updateFuelLevel() {
-        System.out.print("🔧 Enter Fuel Type: ");
-        String type = sc.nextLine();
-        System.out.print("⛽ Enter Fuel Quantity to Update: ");
-        double quantity = sc.nextDouble();
-        fuelService.updateFuelLevel(type, quantity);
+
+        FuelType selectedFuelType = null;
+        
+        // Loop until a valid fuel type is entered
+        while (selectedFuelType == null) {
+            System.out.println("🔧 Available Fuel Types:");
+            for (FuelType fuelType : FuelType.values()) {
+                System.out.println("   ➡️ " + fuelType);
+            }
+
+            System.out.print("👉 Select Fuel Type from the list: ");
+            String typeInput = sc.nextLine().toUpperCase();
+
+            // Validate the selected fuel type
+            try {
+                selectedFuelType = FuelType.valueOf(typeInput);
+            } catch (IllegalArgumentException e) {
+                System.out.println("❌ Invalid fuel type! Please select a valid type from the list.");
+            }
+        }
+    	
+        double quantity = getDoubleInput("⛽ Enter Fuel Quantity to Update: ");
+        fuelService.updateFuelLevel(selectedFuelType.name(), quantity);
         System.out.println("✅ Fuel Level updated successfully.");
     }
 
     // Check Fuel Level
     private void checkFuelLevel() {
-        System.out.print("🔍 Enter Fuel Type: ");
-        String type = sc.nextLine();
-        double level = fuelService.checkFuelLevel(type);
-        System.out.println("⚡ Fuel Level for " + type + ": " + level);
+        FuelType selectedFuelType = null;
+        
+        // Loop until a valid fuel type is entered
+        while (selectedFuelType == null) {
+            System.out.println("🔧 Available Fuel Types:");
+            for (FuelType fuelType : FuelType.values()) {
+                System.out.println("   ➡️ " + fuelType);
+            }
+
+            System.out.print("👉 Select Fuel Type from the list: ");
+            String typeInput = sc.nextLine().toUpperCase();
+
+            // Validate the selected fuel type
+            try {
+                selectedFuelType = FuelType.valueOf(typeInput);
+            } catch (IllegalArgumentException e) {
+                System.out.println("❌ Invalid fuel type! Please select a valid type from the list.");
+            }
+        }
+    	
+        double level = fuelService.checkFuelLevel(selectedFuelType.name());
+        System.out.println("⚡ Fuel Level for " + selectedFuelType.name() + ": " + level);
     }
 
     // Order Fuel Truck
     private void orderFuelTruck() {
-        System.out.print("🚚 Enter Fuel Type: ");
-        String type = sc.nextLine();
+        FuelType selectedFuelType = null;
+        
+        // Loop until a valid fuel type is entered
+        while (selectedFuelType == null) {
+            System.out.println("🔧 Available Fuel Types:");
+            for (FuelType fuelType : FuelType.values()) {
+                System.out.println("   ➡️ " + fuelType);
+            }
+
+            System.out.print("👉 Select Fuel Type from the list: ");
+            String typeInput = sc.nextLine().toUpperCase();
+
+            // Validate the selected fuel type
+            try {
+                selectedFuelType = FuelType.valueOf(typeInput);
+            } catch (IllegalArgumentException e) {
+                System.out.println("❌ Invalid fuel type! Please select a valid type from the list.");
+            }
+        }
+    	
         System.out.print("🛢️ Enter Fuel Quantity to Order: ");
         double quantity = sc.nextDouble();
-        fuelService.orderFuelTruck(type, quantity);
+        fuelService.orderFuelTruck(selectedFuelType.name(), quantity);
         System.out.println("✅ Fuel Truck ordered successfully.");
     }
 
     // Reduce Fuel Quantity
     private void reduceFuelQuantity() {
-        System.out.print("🔧 Enter Fuel Type: ");
-        String type = sc.nextLine();
+        FuelType selectedFuelType = null;
+        
+        // Loop until a valid fuel type is entered
+        while (selectedFuelType == null) {
+            System.out.println("🔧 Available Fuel Types:");
+            for (FuelType fuelType : FuelType.values()) {
+                System.out.println("   ➡️ " + fuelType);
+            }
+
+            System.out.print("👉 Select Fuel Type from the list: ");
+            String typeInput = sc.nextLine().toUpperCase();
+
+            // Validate the selected fuel type
+            try {
+                selectedFuelType = FuelType.valueOf(typeInput);
+            } catch (IllegalArgumentException e) {
+                System.out.println("❌ Invalid fuel type! Please select a valid type from the list.");
+            }
+        }
+    	
         System.out.print("🔽 Enter Fuel Quantity to Reduce: ");
         double quantity = sc.nextDouble();
-        fuelService.reduceFuelQuantity(type, quantity);
+        fuelService.reduceFuelQuantity(selectedFuelType.name(), quantity);
         System.out.println("⚡ Fuel Quantity reduced successfully.");
     }
 
@@ -166,8 +259,7 @@ public class ClientActivator implements BundleActivator {
     private void notificationMenu() {
         System.out.println("\n--- 📲 Notifications ---");
         System.out.println("1. View Notifications");
-        System.out.println("2. Mark Notification as Read");
-        System.out.println("3. Back to Main Menu");
+        System.out.println("2. Back to Main Menu");
 
         System.out.print("👉 Choose an option: ");
         int choice = sc.nextInt();
@@ -178,16 +270,13 @@ public class ClientActivator implements BundleActivator {
                 viewNotifications();
                 break;
             case 2:
-                markNotificationAsRead();
-                break;
-            case 3:
                 return;
             default:
                 System.out.println("❌ Invalid choice, try again.");
         }
     }
 
-    // View Notifications
+     // View Notifications
     private void viewNotifications() {
         List<NotificationModel> notifications = notificationService.getNotifications();
         if (notifications.isEmpty()) {
@@ -196,15 +285,71 @@ public class ClientActivator implements BundleActivator {
             for (int i = 0; i < notifications.size(); i++) {
                 System.out.println(i + ": " + notifications.get(i));
             }
+
+            // Prompt user to mark notifications as read
+            markMultipleNotificationsAsRead();
         }
     }
 
-    // Mark Notification as Read
-    private void markNotificationAsRead() {
-        System.out.print("✔️ Enter notification index to mark as read: ");
-        int index = sc.nextInt();
-        notificationService.markNotificationAsRead(index);
-        System.out.println("✅ Notification marked as read.");
+    // Mark multiple Notifications as Read
+    private void markMultipleNotificationsAsRead() {
+        System.out.print("✔️ Enter notification indices (separate multiple indices with spaces): ");
+        String input = sc.nextLine();
+
+        // Split input by spaces and convert to integers
+        String[] indices = input.split("\\s+");
+
+        // Iterate through the indices and mark each notification as read
+        for (String indexStr : indices) {
+            try {
+                int index = Integer.parseInt(indexStr);
+                notificationService.markNotificationAsRead(index);
+                System.out.println("✅ Notification " + index + " marked as read.");
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid input! Please enter valid indices.");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("❌ Invalid index! No notification found at index " + indexStr);
+            }
+        }
+    }
+
+    
+ // Method to get valid integer input with error handling
+    private int getIntInput(String prompt) {
+        int choice = -1;
+        while (choice < 0) {
+            System.out.print(prompt);
+            try {
+                choice = sc.nextInt();
+                sc.nextLine(); // Consume newline
+                if (choice < 0) {
+                    System.out.println("❌ Invalid input! Please enter a positive number.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("❌ Invalid input! Please enter a valid number.");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
+        return choice;
+    }
+
+    // Method to get valid double input with error handling
+    private double getDoubleInput(String prompt) {
+        double value = -1.0;
+        while (value < 0) {
+            System.out.print(prompt);
+            try {
+                value = sc.nextDouble();
+                sc.nextLine(); // Consume newline
+                if (value < 0) {
+                    System.out.println("❌ Invalid input! Please enter a positive number.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("❌ Invalid input! Please enter a valid number.");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
+        return value;
     }
 }
 
