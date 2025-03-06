@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MainClient
+Bundle-SymbolicName: com.fuel.MainClient
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.fuel.mainclient.MainClientActivator
+Bundle-Vendor: FUEL
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: com.fuel.MainClient
+Import-Package: com.fuel.clientservice,
+ org.osgi.framework;version="1.3.0"
+Bundle-ActivationPolicy: lazy

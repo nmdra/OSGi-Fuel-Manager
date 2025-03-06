@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ClientService
+Bundle-SymbolicName: com.fuel.clientService
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.fuel.clientservice.ClientActivator
+Bundle-Vendor: FUEL
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: com.fuel.clientService
+Import-Package: com.fuel.fuelservice,
+ com.fuel.notificationsservice,
+ org.osgi.framework;version="1.3.0"
+Export-Package: com.fuel.clientservice 
+Bundle-ActivationPolicy: lazy

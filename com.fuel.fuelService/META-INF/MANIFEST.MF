@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: FuelService
+Bundle-SymbolicName: com.fuel.fuelService
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.fuel.fuelservice.FuelServiceActivator
+Bundle-Vendor: SERVICE
+Bundle-RequiredExecutionEnvironment: JavaSE-21,
+ JavaSE-17
+Automatic-Module-Name: com.service.example
+Import-Package: com.fuel.notificationsservice,
+ org.osgi.framework
+Export-Package: com.fuel.fuelservice
+Bundle-ActivationPolicy: lazy
