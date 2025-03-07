@@ -5,7 +5,6 @@ import com.fuel.fuelservice.IFuelService;
 import com.fuel.notificationsservice.INotificationService;
 import com.fuel.notificationsservice.NotificationModel;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import org.osgi.framework.BundleActivator;
@@ -14,325 +13,322 @@ import org.osgi.framework.ServiceReference;
 
 public class ClientActivator implements BundleActivator {
 
-    private IFuelService fuelService;
-    private INotificationService notificationService;
-    private Scanner sc = new Scanner(System.in);
+	private IFuelService fuelService;
+	private INotificationService notificationService;
+	private Scanner sc = new Scanner(System.in);
 
-    @Override
-    public void start(BundleContext context) throws Exception {
-        System.out.println("🚀 Manager Service Starting...");
+	@Override
+	public void start(BundleContext context) throws Exception {
+		System.out.println("🚀 Manager Service Starting...");
 
-        // Retrieve Fuel Service Reference
-        ServiceReference<IFuelService> fuelServiceReference = context.getServiceReference(IFuelService.class);
-        if (fuelServiceReference != null) {
-            fuelService = context.getService(fuelServiceReference);
-            System.out.println("💥 Fuel Service available.");
-        } else {
-            System.out.println("⚠️ Fuel Service not available.");
-        }
+		// Retrieve Fuel Service Reference
+		ServiceReference<IFuelService> fuelServiceReference = context.getServiceReference(IFuelService.class);
+		if (fuelServiceReference != null) {
+			fuelService = context.getService(fuelServiceReference);
+			System.out.println("💥 Fuel Service available.");
+		} else {
+			System.out.println("⚠️ Fuel Service not available.");
+		}
 
-        // Retrieve Notification Service Reference
-        ServiceReference<INotificationService> notificationServiceReference = context.getServiceReference(INotificationService.class);
-        if (notificationServiceReference != null) {
-            notificationService = context.getService(notificationServiceReference);
-            System.out.println("🔔 Notification Service available.");
-        } else {
-            System.out.println("⚠️ Notification Service not available.");
-        }
+		// Retrieve Notification Service Reference
+		ServiceReference<INotificationService> notificationServiceReference = context
+				.getServiceReference(INotificationService.class);
+		if (notificationServiceReference != null) {
+			notificationService = context.getService(notificationServiceReference);
+			System.out.println("🔔 Notification Service available.");
+		} else {
+			System.out.println("⚠️ Notification Service not available.");
+		}
 
-        // Show menu and interact with services
-        displayMenu();
-    }
+		// Show menu and interact with services
+		displayMenu();
+	}
 
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        System.out.println("🛑 Manager Service Shutting Down...");
-    }
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		System.out.println("🛑 Manager Service Shutting Down...");
+	}
 
-    // Display the menu for interacting with the services
-    private void displayMenu() {
-        while (true) {
-            System.out.println("\n--- 💼 Client Service ---");
-            System.out.println("1. Fuel Management");
-            System.out.println("2. View Notifications");
-            System.out.println("3. Exit");
+	// Display the menu for interacting with the services
+	private void displayMenu() {
+		while (true) {
+			System.out.println("\n--- 💼 Client Service ---");
+			System.out.println("1. Fuel Management");
+			System.out.println("2. View Notifications");
+			System.out.println("3. Exit");
 
-            System.out.print("👉 Choose an option: ");
-            int choice = sc.nextInt();
-            sc.nextLine(); // Consume newline
+			System.out.print("👉 Choose an option: ");
+			int choice = sc.nextInt();
+			sc.nextLine(); // Consume newline
 
-            switch (choice) {
-                case 1:
-                    fuelManagementMenu();
-                    break;
-                case 2:
-                    notificationMenu();
-                    break;
-                case 3:
-                    System.out.println("👋 Exiting Client Service...");
-                    return;
-                default:
-                    System.out.println("❌ Invalid choice, try again.");
-            }
-        }
-    }
+			switch (choice) {
+			case 1:
+				fuelManagementMenu();
+				break;
+			case 2:
+				notificationMenu();
+				break;
+			case 3:
+				System.out.println("👋 Exiting Client Service...");
+				return;
+			default:
+				System.out.println("❌ Invalid choice, try again.");
+			}
+		}
+	}
 
-    // Fuel Management menu
-    private void fuelManagementMenu() {
-        System.out.println("\n--- ⛽ Fuel Management ---");
-        System.out.println("1. Add Fuel Type");
-        System.out.println("2. Update Fuel Level");
-        System.out.println("3. Check Fuel Level");
-        System.out.println("4. Order Fuel Truck");
-        System.out.println("5. Reduce Fuel Quantity");
-        System.out.println("6. Get Fuel Price by Fuel Type");
-        System.out.println("7. Update Fuel Prices by Fuel Type");
-        System.out.println("8. Back to Main Menu");
+	// Fuel Management menu
+	private void fuelManagementMenu() {
+		System.out.println("\n--- ⛽ Fuel Management ---");
+		System.out.println("1. Add Fuel Type");
+		System.out.println("2. Update Fuel Level");
+		System.out.println("3. Check Fuel Level");
+		System.out.println("4. Order Fuel Truck");
+		System.out.println("5. Reduce Fuel Quantity");
+		System.out.println("6. Get Fuel Price by Fuel Type");
+		System.out.println("7. Update Fuel Prices by Fuel Type");
+		System.out.println("8. Back to Main Menu");
 
-        System.out.print("👉 Choose an option: ");
-        int choice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+		System.out.print("👉 Choose an option: ");
+		int choice = sc.nextInt();
+		sc.nextLine(); // Consume newline
 
-        switch (choice) {
-            case 1:
-                addFuelType();
-                break;
-            case 2:
-                updateFuelLevel();
-                break;
-            case 3:
-                checkFuelLevel();
-                break;
-            case 4:
-                orderFuelTruck();
-                break;
-            case 5:
-                reduceFuelQuantity();
-                break;
-            case 6:
-            	getFuelPrice();
-            	break;
-            case 7:
-            	updateFuelPrice();
-            	break;
-            case 8:
-                return;
-            default:
-                System.out.println("❌ Invalid choice, try again.");
-        }
-    }
-    
-    private void addFuelType() {        
-        FuelType selectedFuelType = selectFuelType();
-        
-        // Get fuel price and quantity
-        System.out.print("💵 Enter Fuel Price: ");
-        while (!sc.hasNextDouble()) {
-            System.out.println("❌ Invalid input! Please enter a valid price.");
-            sc.nextLine();
-        }
-        double price = sc.nextDouble();
+		switch (choice) {
+		case 1:
+			addFuelType();
+			break;
+		case 2:
+			updateFuelLevel();
+			break;
+		case 3:
+			checkFuelLevel();
+			break;
+		case 4:
+			orderFuelTruck();
+			break;
+		case 5:
+			reduceFuelQuantity();
+			break;
+		case 6:
+			getFuelPrice();
+			break;
+		case 7:
+			updateFuelPrice();
+			break;
+		case 8:
+			return;
+		default:
+			System.out.println("❌ Invalid choice, try again.");
+		}
+	}
 
-        System.out.print("⛽ Enter Fuel Quantity: ");
-        while (!sc.hasNextDouble()) {
-            System.out.println("❌ Invalid input! Please enter a valid quantity.");
-            sc.nextLine();
-        }
-        double quantity = sc.nextDouble();
-        sc.nextLine(); // Consume newline
+	private void addFuelType() {
+		FuelType selectedFuelType = selectFuelType();
 
-        // Add fuel type
-        fuelService.addFuelType(selectedFuelType.name(), price, quantity);
-        System.out.println("✅ Fuel Type " + selectedFuelType + " added successfully.");
-    }
+		// Get fuel price and quantity
+		System.out.print("💵 Enter Fuel Price: ");
+		while (!sc.hasNextDouble()) {
+			System.out.println("❌ Invalid input! Please enter a valid price.");
+			sc.nextLine();
+		}
+		double price = sc.nextDouble();
+
+		System.out.print("⛽ Enter Fuel Quantity: ");
+		while (!sc.hasNextDouble()) {
+			System.out.println("❌ Invalid input! Please enter a valid quantity.");
+			sc.nextLine();
+		}
+		double quantity = sc.nextDouble();
+		sc.nextLine(); // Consume newline
+
+		// Add fuel type
+		fuelService.addFuelType(selectedFuelType.name(), price, quantity);
+		System.out.println("✅ Fuel Type " + selectedFuelType + " added successfully.");
+	}
 
 // Update Fuel Level with validation
-    private void updateFuelLevel() {
-        FuelType selectedFuelType = selectFuelType();
-        
-        double quantity = getValidatedQuantity();
-        
-        // Update fuel level
-        fuelService.updateFuelLevel(selectedFuelType.name(), quantity);
-        System.out.println("✅ Fuel Level updated successfully.");
-    }
+	private void updateFuelLevel() {
+		FuelType selectedFuelType = selectFuelType();
 
-    // Method to validate and retrieve a valid fuel quantity
-    private double getValidatedQuantity() {
-        double quantity;
-        while (true) {
-            System.out.print("⛽ Enter Fuel Quantity (Use negative to reduce fuel): ");
+		double quantity = getValidatedQuantity();
 
-            if (sc.hasNextDouble()) {
-                quantity = sc.nextDouble();
-                sc.nextLine(); // Consume newline
-                break; // Valid input, exit loop
-            } else {
-                System.out.println("❌ Invalid input! Please enter a valid number.");
-                sc.nextLine(); // Consume invalid input
-            }
-        }
-        return quantity;
-    }
+		// Update fuel level
+		fuelService.updateFuelLevel(selectedFuelType.name(), quantity);
+		System.out.println("✅ Fuel Level updated successfully.");
+	}
 
-    // Check Fuel Level
-    private void checkFuelLevel() {        
-        FuelType selectedFuelType = selectFuelType();
-    	
-        double level = fuelService.checkFuelLevel(selectedFuelType.name());
-        if(level != -1.0) {
-            System.out.println("⚡ Fuel Level for " + selectedFuelType.name() + ": " + level);
-        } else {
-        	System.out.println("This Fuel Type is Empty...");
-        }
+	// Method to validate and retrieve a valid fuel quantity
+	private double getValidatedQuantity() {
+		double quantity;
+		while (true) {
+			System.out.print("⛽ Enter Fuel Quantity (Use negative to reduce fuel): ");
 
-    }
+			if (sc.hasNextDouble()) {
+				quantity = sc.nextDouble();
+				sc.nextLine(); // Consume newline
+				break; // Valid input, exit loop
+			} else {
+				System.out.println("❌ Invalid input! Please enter a valid number.");
+				sc.nextLine(); // Consume invalid input
+			}
+		}
+		return quantity;
+	}
 
-    // Order Fuel Truck
-    private void orderFuelTruck() {        
-        FuelType selectedFuelType = selectFuelType();
+	// Check Fuel Level
+	private void checkFuelLevel() {
+		FuelType selectedFuelType = selectFuelType();
 
-        System.out.print("🛢️ Enter Fuel Quantity to Order: ");
-        double quantity = sc.nextDouble();
-        fuelService.orderFuelTruck(selectedFuelType.name(), quantity);
-        System.out.println("✅ Fuel Truck ordered successfully.");
-    }
+		double level = fuelService.checkFuelLevel(selectedFuelType.name());
+		if (level != -1.0) {
+			System.out.println("⚡ Fuel Level for " + selectedFuelType.name() + ": " + level);
+		} else {
+			System.out.println("This Fuel Type is Empty...");
+		}
 
-    // Reduce Fuel Quantity
-    private void reduceFuelQuantity() {       
-        FuelType selectedFuelType = selectFuelType();
-    	
-        System.out.print("🔽 Enter Fuel Quantity to Reduce: ");
-        double quantity = sc.nextDouble();
-        fuelService.reduceFuelQuantity(selectedFuelType.name(), quantity);
-        System.out.println("⚡ Fuel Quantity reduced successfully.");
-    }
+	}
 
-    // Notification menu
-    private void notificationMenu() {
-        System.out.println("\n--- 📲 Notifications ---");
-        System.out.println("1. View Notifications");
-        System.out.println("2. Back to Main Menu");
+	// Order Fuel Truck
+	private void orderFuelTruck() {
+		FuelType selectedFuelType = selectFuelType();
 
-        System.out.print("👉 Choose an option: ");
-        int choice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+		System.out.print("🛢️ Enter Fuel Quantity to Order: ");
+		double quantity = sc.nextDouble();
+		fuelService.orderFuelTruck(selectedFuelType.name(), quantity);
+		System.out.println("✅ Fuel Truck ordered successfully.");
+	}
 
-        switch (choice) {
-            case 1:
-                viewNotifications();
-                break;
-            case 2:
-                return;
-            default:
-                System.out.println("❌ Invalid choice, try again.");
-        }
-    }
+	// Reduce Fuel Quantity
+	private void reduceFuelQuantity() {
+		FuelType selectedFuelType = selectFuelType();
 
-    // View Notifications
-    private void viewNotifications() {
-        List<NotificationModel> notifications = notificationService.getNotifications();
-        if (notifications.isEmpty()) {
-            System.out.println("📜 No new notifications.");
-        } else {
-            for (int i = 0; i < notifications.size(); i++) {
-                System.out.println(i + ": " + notifications.get(i));
-            }
+		System.out.print("🔽 Enter Fuel Quantity to Reduce: ");
+		double quantity = sc.nextDouble();
+		fuelService.reduceFuelQuantity(selectedFuelType.name(), quantity);
+		System.out.println("⚡ Fuel Quantity reduced successfully.");
+	}
 
-            // Prompt user to mark notifications as read
-            markMultipleNotificationsAsRead();
-        }
-    }
+	// Notification menu
+	private void notificationMenu() {
+		System.out.println("\n--- 📲 Notifications ---");
+		System.out.println("1. View Notifications");
+		System.out.println("2. Back to Main Menu");
 
-    // Mark multiple Notifications as Read
-    private void markMultipleNotificationsAsRead() {
-        System.out.print("✔️ Enter notification indices (separate multiple indices with spaces): ");
-        String input = sc.nextLine();
+		System.out.print("👉 Choose an option: ");
+		int choice = sc.nextInt();
+		sc.nextLine(); // Consume newline
 
-        // Split input by spaces and convert to integers
-        String[] indices = input.split("\\s+");
+		switch (choice) {
+		case 1:
+			viewNotifications();
+			break;
+		case 2:
+			return;
+		default:
+			System.out.println("❌ Invalid choice, try again.");
+		}
+	}
 
-        // Iterate through the indices and mark each notification as read
-        for (String indexStr : indices) {
-            try {
-                int index = Integer.parseInt(indexStr);
-                notificationService.markNotificationAsRead(index);
-                System.out.println("✅ Notification " + index + " marked as read.");
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid input! Please enter valid indices.");
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("❌ Invalid index! No notification found at index " + indexStr);
-            }
-        }
-    }
+	// View Notifications
+	private void viewNotifications() {
+		List<NotificationModel> notifications = notificationService.getNotifications();
+		if (notifications.isEmpty()) {
+			System.out.println("📜 No new notifications.");
+		} else {
+			for (int i = 0; i < notifications.size(); i++) {
+				System.out.println(i + ": " + notifications.get(i));
+			}
 
- // Get Fuel Price
-    private void getFuelPrice() {
-        FuelType selectedFuelType = selectFuelType();
-        if (selectedFuelType != null) {
-            double price = fuelService.getFuelPrice(selectedFuelType.name());
-            if (price != -1) {
-                System.out.println("💰 Price for " + selectedFuelType + ": $" + price);
-            }
-        }
-    }
+			// Prompt user to mark notifications as read
+			markMultipleNotificationsAsRead();
+		}
+	}
 
-    // Update Fuel Price
-    private void updateFuelPrice() {
-        FuelType selectedFuelType = selectFuelType();
-        if (selectedFuelType != null) {
-            double newPrice = getValidatedPrice();
-            fuelService.updateFuelPrice(selectedFuelType.name(), newPrice);
-        }
-    }
+	// Mark multiple Notifications as Read
+	private void markMultipleNotificationsAsRead() {
+		System.out.print("✔️ Enter notification indices (separate multiple indices with spaces): ");
+		String input = sc.nextLine();
 
-    // Select Fuel Type using a number
-    private FuelType selectFuelType() {
-        FuelType[] fuelTypes = FuelType.values();
-        while (true) {
-            System.out.println("🔧 Available Fuel Types:");
-            for (int i = 0; i < fuelTypes.length; i++) {
-                System.out.println("   " + (i + 1) + ". " + fuelTypes[i]);
-            }
+		// Split input by spaces and convert to integers
+		String[] indices = input.split("\\s+");
 
-            System.out.print("👉 Select Fuel Type (Enter Number): ");
-            if (sc.hasNextInt()) {
-                int typeIndex = sc.nextInt();
-                sc.nextLine(); // Consume newline
+		// Iterate through the indices and mark each notification as read
+		for (String indexStr : indices) {
+			try {
+				int index = Integer.parseInt(indexStr);
+				notificationService.markNotificationAsRead(index);
+				System.out.println("✅ Notification " + index + " marked as read.");
+			} catch (NumberFormatException e) {
+				System.out.println("❌ Invalid input! Please enter valid indices.");
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("❌ Invalid index! No notification found at index " + indexStr);
+			}
+		}
+	}
 
-                if (typeIndex >= 1 && typeIndex <= fuelTypes.length) {
-                    return fuelTypes[typeIndex - 1];
-                } else {
-                    System.out.println("❌ Invalid selection! Please enter a valid number.");
-                }
-            } else {
-                System.out.println("❌ Invalid input! Please enter a number.");
-                sc.nextLine(); // Consume invalid input
-            }
-        }
-    }
+	// Get Fuel Price
+	private void getFuelPrice() {
+		FuelType selectedFuelType = selectFuelType();
+		if (selectedFuelType != null) {
+			double price = fuelService.getFuelPrice(selectedFuelType.name());
+			if (price != -1) {
+				System.out.println("💰 Price for " + selectedFuelType + ": $" + price);
+			}
+		}
+	}
 
-    // Validate and get fuel price input
-    private double getValidatedPrice() {
-        double price;
-        while (true) {
-            System.out.print("💵 Enter new fuel price: ");
-            if (sc.hasNextDouble()) {
-                price = sc.nextDouble();
-                sc.nextLine(); // Consume newline
-                if (price > 0) {
-                    return price;
-                } else {
-                    System.out.println("❌ Price must be greater than zero.");
-                }
-            } else {
-                System.out.println("❌ Invalid input! Please enter a valid number.");
-                sc.nextLine(); // Consume invalid input
-            }
-        }
-    }
+	// Update Fuel Price
+	private void updateFuelPrice() {
+		FuelType selectedFuelType = selectFuelType();
+		if (selectedFuelType != null) {
+			double newPrice = getValidatedPrice();
+			fuelService.updateFuelPrice(selectedFuelType.name(), newPrice);
+		}
+	}
+
+	// Select Fuel Type using a number
+	private FuelType selectFuelType() {
+		FuelType[] fuelTypes = FuelType.values();
+		while (true) {
+			System.out.println("🔧 Available Fuel Types:");
+			for (int i = 0; i < fuelTypes.length; i++) {
+				System.out.println("   " + (i + 1) + ". " + fuelTypes[i]);
+			}
+
+			System.out.print("👉 Select Fuel Type (Enter Number): ");
+			if (sc.hasNextInt()) {
+				int typeIndex = sc.nextInt();
+				sc.nextLine(); // Consume newline
+
+				if (typeIndex >= 1 && typeIndex <= fuelTypes.length) {
+					return fuelTypes[typeIndex - 1];
+				} else {
+					System.out.println("❌ Invalid selection! Please enter a valid number.");
+				}
+			} else {
+				System.out.println("❌ Invalid input! Please enter a number.");
+				sc.nextLine(); // Consume invalid input
+			}
+		}
+	}
+
+	// Validate and get fuel price input
+	private double getValidatedPrice() {
+		double price;
+		while (true) {
+			System.out.print("💵 Enter new fuel price: ");
+			if (sc.hasNextDouble()) {
+				price = sc.nextDouble();
+				sc.nextLine(); // Consume newline
+				if (price > 0) {
+					return price;
+				} else {
+					System.out.println("❌ Price must be greater than zero.");
+				}
+			} else {
+				System.out.println("❌ Invalid input! Please enter a valid number.");
+				sc.nextLine(); // Consume invalid input
+			}
+		}
+	}
 }
-
-
-
-
