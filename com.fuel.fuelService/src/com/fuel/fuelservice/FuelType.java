@@ -4,5 +4,6 @@ public enum FuelType {
     OCTANE_92,
     OCTANE_95,
     DIESEL,
-    KEROSENE
+    KEROSENE,
+    OTHER
 }

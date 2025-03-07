@@ -6,4 +6,6 @@ public interface IFuelService {
     double checkFuelLevel(String type);
     void orderFuelTruck(String type, double quantity);
     void reduceFuelQuantity(String type, double quantity);
+	void updateFuelPrice(String name, double newPrice);
+	double getFuelPrice(String name);
 }

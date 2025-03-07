@@ -8,8 +8,7 @@ import com.fuel.notificationsservice.INotificationService;
 
 public class FuelServiceImpl implements IFuelService {
     
-    private final Map<FuelType, Double> fuelInventory = new HashMap<>();
-    private final Map<FuelType, Double> fuelPrices = new HashMap<>();
+    private final Map<FuelType, Fuel> fuelInventory = new HashMap<>();
     private INotificationService notificationService;
 
     public FuelServiceImpl(BundleContext context) {
@@ -20,16 +19,27 @@ public class FuelServiceImpl implements IFuelService {
     }
 
     @Override
-    public void addFuelType(String type, double price, double quantity) {
+    public void addFuelType(String type, double price, double quantity) {        
         try {
             FuelType fuelType = FuelType.valueOf(type.toUpperCase()); // Validate Fuel Type
-            fuelInventory.put(fuelType, quantity);
-            fuelPrices.put(fuelType, price);
-            System.out.println("✅ Added fuel type: " + fuelType + " (Price: " + price + ", Quantity: " + quantity + ")");
-
-            if (notificationService != null) {
-                notificationService.addNotification("Added fuel: " + fuelType, "INFO");
+            
+            // Check if fuel already exists, update it instead of creating a new one
+            Fuel fuel = fuelInventory.get(fuelType);
+            if (fuel == null) {
+                fuel = new Fuel(fuelType.name(), price, quantity);
+                fuelInventory.put(fuelType, fuel);
+                System.out.println("✅ Added new fuel type: " + fuelType + " (Price: " + price + ", Quantity: " + quantity + ")");
+            } else {
+                fuel.setPrice(price);
+                fuel.setQuantity(quantity);
+                System.out.println("🔄 Updated existing fuel type: " + fuelType + " (New Price: " + price + ", New Quantity: " + quantity + ")");
             }
+
+            // Send notification if available
+            if (notificationService != null) {
+                notificationService.addNotification("Fuel updated: " + fuelType + " (Price: " + price + ", Quantity: " + quantity + ")", "INFO");
+            }
+
         } catch (IllegalArgumentException e) {
             System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL, KEROSENE.");
         }
@@ -39,22 +49,45 @@ public class FuelServiceImpl implements IFuelService {
     public void updateFuelLevel(String type, double quantity) {
         try {
             FuelType fuelType = FuelType.valueOf(type.toUpperCase());
-            fuelInventory.put(fuelType, fuelInventory.getOrDefault(fuelType, 0.0) + quantity);
-            System.out.println("✅ Updated fuel level for: " + fuelType + " (New quantity: " + fuelInventory.get(fuelType) + ")");
-
-            if (notificationService != null) {
-                notificationService.addNotification("Updated fuel level: " + fuelType, "INFO");
+            Fuel fuel = fuelInventory.get(fuelType);
+            
+            if (fuel != null) {
+                double currentQuantity = fuel.getQuantity();
+                double newQuantity = currentQuantity + quantity;
+                
+                // Ensure the fuel level doesn't go below zero
+                if (newQuantity < 0) {
+                    System.out.println("❌ Cannot reduce fuel level below zero for: " + fuelType);
+                    return;
+                }
+                
+                // Update the fuel quantity
+                fuel.setQuantity(newQuantity);
+                System.out.println("✅ Updated fuel level for: " + fuelType + " (New quantity: " + fuel.getQuantity() + ")");
+                
+                if (notificationService != null) {
+                    notificationService.addNotification("Updated fuel level: " + fuelType, "INFO");
+                }
+            } else {
+                System.out.println("❌ Fuel type " + fuelType + " not found.");
             }
         } catch (IllegalArgumentException e) {
             System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL, KEROSENE.");
         }
     }
 
+
     @Override
     public double checkFuelLevel(String type) {
         try {
             FuelType fuelType = FuelType.valueOf(type.toUpperCase());
-            return fuelInventory.getOrDefault(fuelType, 0.0);
+            Fuel fuel = fuelInventory.get(fuelType);
+            if (fuel != null) {
+                return fuel.getQuantity();
+            } else {
+                System.out.println("❌ Fuel type " + fuelType + " not found.");
+                return -1; // Return -1 to indicate an error
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL, KEROSENE.");
             return -1; // Return -1 to indicate an error
@@ -75,14 +108,16 @@ public class FuelServiceImpl implements IFuelService {
         }
     }
 
+    // TODO
     public void reduceFuelQuantity(String type, double quantity) {
         try {
             FuelType fuelType = FuelType.valueOf(type.toUpperCase());
+            Fuel fuel = fuelInventory.get(fuelType);
 
-            if (fuelInventory.containsKey(fuelType)) {
-                double currentQuantity = fuelInventory.get(fuelType);
+            if (fuel != null) {
+                double currentQuantity = fuel.getQuantity();
                 if (currentQuantity >= quantity) {
-                    fuelInventory.put(fuelType, currentQuantity - quantity);
+                    fuel.setQuantity(currentQuantity - quantity); // Reduce fuel quantity
                     System.out.println("✅ Reduced " + quantity + "L of " + fuelType + ". New quantity: " + (currentQuantity - quantity));
                 } else {
                     System.out.println("⚠️ Not enough " + fuelType + " available to reduce.");
@@ -94,5 +129,46 @@ public class FuelServiceImpl implements IFuelService {
             System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL, KEROSENE.");
         }
     }
+
+	@Override
+	public void updateFuelPrice(String name, double newPrice) {
+	    try {
+	        FuelType fuelType = FuelType.valueOf(name.toUpperCase());
+	        Fuel fuel = fuelInventory.get(fuelType);
+
+	        if (fuel != null) {
+	            fuel.setPrice(newPrice);
+	            System.out.println("✅ Updated price for " + fuelType + " to $" + newPrice);
+
+	            if (notificationService != null) {
+	                notificationService.addNotification("Updated fuel price: " + fuelType + " - $" + newPrice, "INFO");
+	            }
+	        } else {
+	            System.out.println("⚠️ Fuel type " + fuelType + " not found.");
+	        }
+	    } catch (IllegalArgumentException e) {
+	        System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL, KEROSENE.");
+	    }
+	}
+
+	@Override
+	public double getFuelPrice(String name) {
+	    try {
+	        FuelType fuelType = FuelType.valueOf(name.toUpperCase());
+	        Fuel fuel = fuelInventory.get(fuelType);
+
+	        if (fuel != null) {
+	            return fuel.getPrice();
+	        } else {
+	            System.out.println("⚠️ Fuel type " + fuelType + " not found.");
+	            return -1; // Indicate that the fuel type was not found
+	        }
+	    } catch (IllegalArgumentException e) {
+	        System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL, KEROSENE.");
+	        return -1; // Indicate an error
+	    }
+	}
+
+	
 }
 
