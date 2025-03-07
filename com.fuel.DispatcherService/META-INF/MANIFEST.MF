@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: FuelDispatcherService
-Bundle-SymbolicName: com.fuel.DispatcherService
+Bundle-SymbolicName: com.fuel.DispatcherServicePublisher
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.fuel.DispatcherService.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-17

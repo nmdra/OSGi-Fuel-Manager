@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: FuelService
-Bundle-SymbolicName: com.fuel.fuelService
+Bundle-SymbolicName: com.fuel.FuelServicePublisher
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.fuel.fuelservice.FuelServiceActivator
 Bundle-Vendor: SERVICE

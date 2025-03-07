@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MainClient
-Bundle-SymbolicName: com.fuel.MainClient
+Bundle-SymbolicName: com.fuel.MainClientService
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.fuel.mainclient.MainClientActivator
 Bundle-Vendor: FUEL

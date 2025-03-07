@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: NotificationsService
-Bundle-SymbolicName: com.fuel.notificationsService
+Bundle-SymbolicName: com.fuel.NotificationServicePublisher
 Bundle-Version: 1.0.0.qualifier
 Export-Package: com.fuel.notificationsservice
 Bundle-Activator: com.fuel.notificationsservice.NotificationActivator

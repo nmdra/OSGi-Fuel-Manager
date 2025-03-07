@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ClientService
-Bundle-SymbolicName: com.fuel.clientService
+Bundle-SymbolicName: com.fuel.FuelServiceConsumer
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.fuel.clientservice.ClientActivator
 Bundle-Vendor: FUEL
