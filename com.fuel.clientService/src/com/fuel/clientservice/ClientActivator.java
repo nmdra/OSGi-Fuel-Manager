@@ -331,25 +331,6 @@ public class ClientActivator implements BundleActivator {
             }
         }
     }
-    
- // Method to get valid double input with error handling
-    private double getDoubleInput(String prompt) {
-        double value = -1.0;
-//        while (value < 0) {
-            System.out.print(prompt);
-            try {
-                value = sc.nextDouble();
-                sc.nextLine(); // Consume newline
-//                if (value < 0) {
-//                    System.out.println("❌ Invalid input! Please enter a positive number.");
-//                }
-            } catch (InputMismatchException e) {
-                System.out.println("❌ Invalid input! Please enter a valid number.");
-                sc.nextLine(); // Clear the invalid input
-            }
-//        }
-        return value;
-    }
 }
 
 

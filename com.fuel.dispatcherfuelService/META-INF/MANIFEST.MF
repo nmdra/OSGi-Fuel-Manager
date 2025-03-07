@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: FuelDispatcherModel
+Bundle-SymbolicName: com.fuel.dispatcherfuelService
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: FuelDispatcherModel
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: com.fuel.dispatcherfuelService
+

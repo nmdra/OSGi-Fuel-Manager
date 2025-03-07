@@ -1,5 +1,6 @@
 package com.fuel.mainclient;
 
+import com.fuel.DispatcherClient.FuelDispatcherClient;
 import com.fuel.clientservice.ClientActivator;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -23,8 +24,11 @@ public class MainClientActivator implements BundleActivator {
 
         while (true) {
             System.out.println("👤 Select Your Role:");
+			
             System.out.println("1️⃣  Manager 🏢");
-            System.out.println("2️⃣  Exit 🚪");
+			System.out.println("2️⃣  Fuel 🏢");
+
+            System.out.println("3️⃣  Exit 🚪");
 
             System.out.print("👉 Enter your choice: ");
             int choice = scanner.nextInt();
@@ -35,7 +39,12 @@ public class MainClientActivator implements BundleActivator {
                     System.out.println("🔑 Accessing Manager Dashboard...");
                     startClientService(context);
                     break;
-                case 2:
+					
+				case 2:
+                    System.out.println("🔑 Accessing Fuel Dashboard...");
+                    startDispatcherClient(context);
+                    break;
+                case 3:
                     System.out.println("👋 Exiting Fuel Management System. Have a great day!");
                     return; // Exit loop and stop execution
                 default:
@@ -59,5 +68,16 @@ public class MainClientActivator implements BundleActivator {
             System.out.println("❌ Error initializing Client Service: " + e.getMessage());
         }
     }
+	
+	// Starts the Fuel Client Service (Manager Dashboard)
+    private void startDispatcherClient(BundleContext context) {
+        try {
+            FuelDispatcherClient fuelClient = new FuelDispatcherClient();
+            fuelClient.start(context); // Start Client Service via OSGi
+        } catch (Exception e) {
+            System.out.println("❌ Error initializing Client Service: " + e.getMessage());
+        }
+    }
+	
 }
 
