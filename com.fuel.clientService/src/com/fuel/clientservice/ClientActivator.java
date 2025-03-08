@@ -1,5 +1,6 @@
 package com.fuel.clientservice;
 
+import com.fuel.authservice.IAuthService;
 import com.fuel.fuelservice.FuelType;
 import com.fuel.fuelservice.IFuelService;
 import com.fuel.notificationsservice.INotificationService;
@@ -19,30 +20,53 @@ public class ClientActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		System.out.println("🚀 Manager Service Starting...");
 
-		// Retrieve Fuel Service Reference
-		ServiceReference<IFuelService> fuelServiceReference = context.getServiceReference(IFuelService.class);
-		if (fuelServiceReference != null) {
-			fuelService = context.getService(fuelServiceReference);
-			System.out.println("💥 Fuel Service available.");
-		} else {
-			System.out.println("⚠️ Fuel Service not available.");
-		}
+	    // Retrieve Authentication Service Reference
+	    ServiceReference<IAuthService> authServiceReference = context.getServiceReference(IAuthService.class);
+	    if (authServiceReference != null) {
+	        IAuthService authService = context.getService(authServiceReference);
 
-		// Retrieve Notification Service Reference
-		ServiceReference<INotificationService> notificationServiceReference = context
-				.getServiceReference(INotificationService.class);
-		if (notificationServiceReference != null) {
-			notificationService = context.getService(notificationServiceReference);
-			System.out.println("🔔 Notification Service available.");
-		} else {
-			System.out.println("⚠️ Notification Service not available.");
-		}
+	        if (authService != null) {
+	            Scanner scanner = new Scanner(System.in);
 
-		// Show menu and interact with services
-		displayMenu();
+	            System.out.print("👤 Enter Username: ");
+	            String username = scanner.nextLine();
+
+	            System.out.print("🔑 Enter Password: ");
+	            String password = scanner.nextLine();
+
+	            if (!authService.login(username, password)) {
+	                System.out.println("🚫 Access denied! Exiting...");
+	                return; // Exit if authentication fails
+	            }
+	        }
+	    } else {
+	        System.out.println("⚠️ Authentication Service not available. Exiting...");
+	        return; // Exit if authentication service is unavailable
+	    }
+
+	    // Retrieve Fuel Service Reference
+	    ServiceReference<IFuelService> fuelServiceReference = context.getServiceReference(IFuelService.class);
+	    if (fuelServiceReference != null) {
+	        fuelService = context.getService(fuelServiceReference);
+	        System.out.println("💥 Fuel Service available.");
+	    } else {
+	        System.out.println("⚠️ Fuel Service not available.");
+	    }
+
+	    // Retrieve Notification Service Reference
+	    ServiceReference<INotificationService> notificationServiceReference = context.getServiceReference(INotificationService.class);
+	    if (notificationServiceReference != null) {
+	        notificationService = context.getService(notificationServiceReference);
+	        System.out.println("🔔 Notification Service available.");
+	    } else {
+	        System.out.println("⚠️ Notification Service not available.");
+	    }
+
+	    // Show menu and interact with services
+	    displayMenu();
 	}
+
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
