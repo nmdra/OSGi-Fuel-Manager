@@ -8,7 +8,8 @@ Bundle-Activator: com.fuelstation.emergencypublisher.EmergencyPublisherActivator
 Bundle-Vendor: FUELSTATION
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: com.fuelstation.emergencypublisher
-Import-Package: com.fuel.notificationsservice,
+Import-Package: com.fuel.fuelservice,
+ com.fuel.notificationsservice,
  com.fuelstation.emergencymodel,
  org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
