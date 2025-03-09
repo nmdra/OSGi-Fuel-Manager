@@ -22,8 +22,14 @@ public class EmergencyPublisher {
 
 		while (true) {
 			displayEmergencyMenu();
-			int option = getIntInput("Select an option: ", 1, 5);
+			Integer  option = getIntInput("Select an option: ", 1, 5);
 
+	        if (option == null) {
+	            System.out.println(YELLOW + "Returning to main menu..." + RESET);
+	            return; // Exit to main menu
+	        }
+
+	        
 			EmergencyType emergencyType;
 			switch (option) {
 			case 1:
@@ -46,7 +52,11 @@ public class EmergencyPublisher {
 			}
 
 			String location = getStringInput("What is the place? (Pump 1, Pump 2, etc.): ");
-			boolean fuelRemains = getBooleanInput("Fuel remains in shell (true/false): ");
+	        if (location == null) {
+	            System.out.println(YELLOW + "Returning to main menu..." + RESET);
+	            return; // Exit to main menu
+	        }
+	        boolean fuelRemains = getBooleanInput("Fuel remains in shell (true/false): ");
 			// boolean critical_level=getBooleanInput()
 
 			FuelStatus fuelStatus = new FuelStatus(!fuelRemains, false); // isTankEmpty = !fuelRemains
@@ -94,7 +104,11 @@ public class EmergencyPublisher {
 		// Check fire status
 		while (true) {
 			String status = getStringInput("Is the fire status normal? (yes/no): ");
-			if (status.equalsIgnoreCase("yes")) {
+			 if (status == null) {
+		            System.out.println(YELLOW + "Returning to main menu..." + RESET);
+		            return; // Exit to main menu
+		        }
+			 if (status.equalsIgnoreCase("yes")) {
 				System.out.println(GREEN + "Exiting fire protocol. Returning to normal." + RESET);
 				break;
 			} else {
@@ -128,6 +142,7 @@ public class EmergencyPublisher {
 				System.out.println(RED + "Flood status not normal. Continuing flood protocol." + RESET);
 			}
 		}
+		
 	}
 
 	private void handleCurruntLeak(EmergencyAlert alert) {
@@ -213,40 +228,50 @@ public class EmergencyPublisher {
 		System.out.println("3. Electric Leak⚡");
 		System.out.println("4. Other");
 		System.out.println("5. Back To Main Menu");
+		
 
 	}
 
-	private int getIntInput(String prompt, int min, int max) {
-		while (true) {
-			System.out.print(YELLOW + prompt + RESET);
-			if (sc.hasNextInt()) {
-				int input = sc.nextInt();
-				sc.nextLine(); // Consume newline
-				if (input >= min && input <= max) {
-					return input;
-				}
-			} else {
-				sc.nextLine(); // Clear invalid input
-			}
-			System.out
-					.println(RED + "Invalid input. Please enter a number between " + min + " and " + max + "." + RESET);
-		}
+	private Integer getIntInput(String prompt, int min, int max) {
+	    while (true) {
+	        System.out.print(YELLOW + prompt + RESET);
+	        String input = sc.nextLine().trim();
+	        if (input.equalsIgnoreCase("e")) {
+	            return null; // Indicates the user wants to exit
+	        }
+	        try {
+	            int value = Integer.parseInt(input);
+	            if (value >= min && value <= max) {
+	                return value;
+	            }
+	        } catch (NumberFormatException e) {
+	            // Ignore and continue
+	        }
+	        System.out.println(RED + "Invalid input. Please enter a number between " + min + " and " + max + " or 'e' to exit." + RESET);
+	    }
 	}
 
 	private String getStringInput(String prompt) {
-		System.out.print(YELLOW + prompt + RESET);
-		return sc.nextLine();
+	    System.out.print(YELLOW + prompt + RESET);
+	    String input = sc.nextLine().trim();
+	    if (input.equalsIgnoreCase("e")) {
+	        return null; // Indicates the user wants to exit
+	    }
+	    return input;
 	}
-
-	private boolean getBooleanInput(String prompt) {
-		while (true) {
-			System.out.print(YELLOW + prompt + RESET);
-			String input = sc.nextLine().toLowerCase();
-			if (input.equals("true") || input.equals("false")) {
-				return Boolean.parseBoolean(input);
-			}
-			System.out.println(RED + "Invalid input. Please enter 'true' or 'false'." + RESET);
-		}
+	
+	private Boolean getBooleanInput(String prompt) {
+	    while (true) {
+	        System.out.print(YELLOW + prompt + RESET);
+	        String input = sc.nextLine().trim().toLowerCase();
+	        if (input.equalsIgnoreCase("e")) {
+	            return null; // Indicates the user wants to exit
+	        }
+	        if (input.equals("true") || input.equals("false")) {
+	            return Boolean.parseBoolean(input);
+	        }
+	        System.out.println(RED + "Invalid input. Please enter 'true', 'false', or 'e' to exit." + RESET);
+	    }
 	}
 
 	public static void main(String[] args) {
