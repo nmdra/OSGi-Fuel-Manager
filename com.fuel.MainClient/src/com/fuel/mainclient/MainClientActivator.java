@@ -2,6 +2,7 @@ package com.fuel.mainclient;
 
 import com.fuel.DispatcherClient.FuelDispatcherClientActivator;
 import com.fuel.clientservice.ClientActivator;
+import staff_consumer.Staff_Consumer_Activator;
 import com.fuelstation.emergencypublisher.EmergencyPublisherActivator;
 
 import org.osgi.framework.BundleActivator;
@@ -31,14 +32,15 @@ public class MainClientActivator implements BundleActivator {
             " ██╔══╝  ██║   ██║██╔══╝  ██║     \n" +
             " ██║     ╚██████╔╝███████╗███████╗\n" +
             " ╚═╝      ╚═════╝ ╚══════╝╚══════╝\n" +
-            "🚀 Welcome to Fuel Management System 🚀\n" + RESET);
+            "🚀 Welcome to Fuel Station Management System 🚀\n" + RESET);
 
         while (true) {
             System.out.println(BOLD + GREEN + "👤 Select Dashboard:" + RESET);
-            System.out.println(YELLOW + "1. Manager 🏢" + RESET);
-            System.out.println(BLUE + "2. Fuel 🏢" + RESET);
-            System.out.println(RED + "3. Emergency 🚨" + RESET);
-            System.out.println(CYAN + "4. Exit 🚪" + RESET);
+            System.out.println(YELLOW + "1. Manage Fuel and Notifications 🏢" + RESET);
+            System.out.println(BLUE + "2. Fuel Dispatcher ⛽" + RESET);
+            System.out.println(GREEN + "3. Manage Staff 👥" + RESET);
+            System.out.println(RED + "4. Emergency 🚨" + RESET);
+            System.out.println(CYAN + "5. Exit 🚪" + RESET);
             
             System.out.print("👉 " + BOLD + "Enter your choice: " + RESET);
             int choice = scanner.nextInt();
@@ -46,21 +48,27 @@ public class MainClientActivator implements BundleActivator {
 
             switch (choice) {
                 case 1:
-                    System.out.println(GREEN + "🔑 Accessing Manager Dashboard..." + RESET);
+                    System.out.println(GREEN + "🔑 Accessing Fuel Management Dashboard..." + RESET);
                     startClientService(context);
                     break;
                     
                 case 2:
-                    System.out.println(BLUE + "🔑 Accessing Fuel Dashboard..." + RESET);
+                    System.out.println(BLUE + "🔑 Accessing Fuel Dispatcher Dashboard..." + RESET);
                     startDispatcherClient(context);
                     break;
 
+                    
                 case 3:
+                	System.out.println(BLUE + "🔑 Accessing Staff Management Dashboard..." + RESET);
+                	startStaffManagementClient(context);
+                	break;
+             
+                case 4:
                     System.out.println(RED + "🔑 Accessing Emergency Dashboard..." + RESET);
                     startEmergencyClient(context);
                     break;
 
-                case 4:
+                case 5:
                     System.out.println(YELLOW + "👋 Shutting down Fuel Management System..." + RESET);
 
                     // Stop OSGi bundles and services
@@ -77,7 +85,7 @@ public class MainClientActivator implements BundleActivator {
                     break;
 
                 default:
-                    System.out.println(RED + "⚠️ Invalid choice! Please enter 1, 2, 3, or 4." + RESET);
+                    System.out.println(RED + "⚠️ Invalid choice! Please enter 1, 2, 3, 4 or 5." + RESET);
             }
         }
     }
@@ -109,11 +117,20 @@ public class MainClientActivator implements BundleActivator {
         }
     }
     
-	// Starts the Fuel Client Service (Manager Dashboard)
     private void startEmergencyClient(BundleContext context) {
         try {
             EmergencyPublisherActivator emergencyClient = new EmergencyPublisherActivator();
             emergencyClient.start(context); // Start Client Service via OSGi
+        } catch (Exception e) {
+            System.out.println("❌ Error initializing Client Service: " + e.getMessage());
+        }
+    }
+    
+    // Start Staff Management Dashboard
+    private void startStaffManagementClient(BundleContext context) {
+        try {
+            Staff_Consumer_Activator staffConsumerClient = new Staff_Consumer_Activator();
+            staffConsumerClient.start(context); // Start Client Service via OSGi
         } catch (Exception e) {
             System.out.println("❌ Error initializing Client Service: " + e.getMessage());
         }

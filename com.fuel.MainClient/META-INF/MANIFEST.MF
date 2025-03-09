@@ -10,5 +10,6 @@ Automatic-Module-Name: com.fuel.MainClient
 Import-Package: com.fuel.DispatcherClient,
  com.fuel.clientservice,
  com.fuelstation.emergencypublisher,
- org.osgi.framework;version="1.3.0"
+ org.osgi.framework;version="1.3.0",
+ staff_consumer
 Bundle-ActivationPolicy: lazy
