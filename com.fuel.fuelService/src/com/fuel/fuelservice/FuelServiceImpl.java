@@ -111,6 +111,18 @@ public class FuelServiceImpl implements IFuelService {
     // TODO
     public void reduceFuelQuantity(String type, double quantity) {
         try {
+        	
+            // Correcting fuel type mappings
+            if (type.equalsIgnoreCase("Diesel")) {
+                type = "DIESEL";
+            } else if (type.equalsIgnoreCase("Petrol")) {
+                type = "OCTANE_95"; 
+            } else if (type.equalsIgnoreCase("92 Octane")) {
+                type = "OCTANE_92"; 
+            } else if (type.equalsIgnoreCase("95 Octane")) {
+                type = "OCTANE_95"; 
+            } 
+            
             FuelType fuelType = FuelType.valueOf(type.toUpperCase());
             Fuel fuel = fuelInventory.get(fuelType);
 
@@ -123,10 +135,11 @@ public class FuelServiceImpl implements IFuelService {
                     System.out.println("⚠️ Not enough " + fuelType + " available to reduce.");
                 }
             } else {
-                System.out.println("❌ Fuel type " + fuelType + " not found.");
+               // FIXME
+               // System.out.println("❌ Fuel type " + fuelType + " not found.");
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL, KEROSENE.");
+            System.out.println("❌ Invalid fuel type! Allowed types: OCTANE_92, OCTANE_95, DIESEL");
         }
     }
 
