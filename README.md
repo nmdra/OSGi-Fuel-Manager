@@ -1,3 +1,4 @@
 # Fuel Station Management Service using OSGi Framework
 
-![OSGi](https://github.com/user-attachments/assets/6cc10de5-34c0-4c06-995d-4eb9e80ed941)
+![OSGi](https://github.com/user-attachments/assets/20a87ee2-7485-4c84-a2f3-1bcc641897cd)
+
