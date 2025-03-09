@@ -17,6 +17,16 @@ public class ClientActivator implements BundleActivator {
 	private IFuelService fuelService;
 	private INotificationService notificationService;
 	private Scanner sc = new Scanner(System.in);
+	
+	// ANSI color codes
+	private static final String RESET = "\u001B[0m";
+	private static final String GREEN = "\u001B[32m";
+	private static final String RED = "\u001B[31m";
+	private static final String YELLOW = "\u001B[33m";
+	private static final String BLUE = "\u001B[34m";
+	private static final String CYAN = "\u001B[36m";
+	private static final String MAGENTA = "\u001B[35m";
+	private static final String WHITE = "\u001B[37m";
 
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -76,10 +86,13 @@ public class ClientActivator implements BundleActivator {
 	// Display the menu for interacting with the services
 	private void displayMenu() {
 		while (true) {
-			System.out.println("\n--- 💼 Client Service ---");
-			System.out.println("1. Fuel Management");
-			System.out.println("2. View Notifications");
-			System.out.println("3. Exit");
+			System.out.println(CYAN + "\n╔══════════════════════════════╗");
+			System.out.println("║      💼 Client Service       ║");
+			System.out.println("╠══════════════════════════════╣");
+			System.out.println("║ 1. Fuel Management           ║");
+			System.out.println("║ 2. View Notifications        ║");
+			System.out.println("║ 3. Exit                      ║");
+			System.out.println("╚══════════════════════════════╝" + RESET);
 
 			System.out.print("👉 Choose an option: ");
 			int choice = sc.nextInt();
@@ -93,25 +106,28 @@ public class ClientActivator implements BundleActivator {
 				notificationMenu();
 				break;
 			case 3:
-				System.out.println("👋 Exiting Client Service...");
+				System.out.println(YELLOW + "👋 Exiting Client Service..." + RESET);
 				return;
 			default:
-				System.out.println("❌ Invalid choice, try again.");
+				System.out.println(RED + "❌ Invalid choice, try again." + RESET);
 			}
 		}
 	}
 
 	// Fuel Management menu
 	private void fuelManagementMenu() {
-		System.out.println("\n--- ⛽ Fuel Management ---");
-		System.out.println("1. Add Fuel Type");
-		System.out.println("2. Update Fuel Level");
-		System.out.println("3. Check Fuel Level");
-		System.out.println("4. Order Fuel Truck");
-		System.out.println("5. Reduce Fuel Quantity");
-		System.out.println("6. Get Fuel Price by Fuel Type");
-		System.out.println("7. Update Fuel Prices by Fuel Type");
-		System.out.println("8. Back to Main Menu");
+		System.out.println(MAGENTA + "\n╔══════════════════════════════╗");
+		System.out.println("║      ⛽ Fuel Management      ║");
+		System.out.println("╠══════════════════════════════╣");
+		System.out.println("║ 1. Add Fuel Type             ║");
+		System.out.println("║ 2. Update Fuel Level         ║");
+		System.out.println("║ 3. Check Fuel Level          ║");
+		System.out.println("║ 4. Order Fuel Truck          ║");
+		System.out.println("║ 5. Reduce Fuel Quantity      ║");
+		System.out.println("║ 6. Get Fuel Price            ║");
+		System.out.println("║ 7. Update Fuel Prices        ║");
+		System.out.println("║ 8. Back to Main Menu         ║");
+		System.out.println("╚══════════════════════════════╝" + RESET);
 
 		System.out.print("👉 Choose an option: ");
 		int choice = sc.nextInt();
@@ -142,7 +158,7 @@ public class ClientActivator implements BundleActivator {
 		case 8:
 			return;
 		default:
-			System.out.println("❌ Invalid choice, try again.");
+			System.out.println(RED + "❌ Invalid choice, try again." + RESET);
 		}
 	}
 
@@ -234,9 +250,12 @@ public class ClientActivator implements BundleActivator {
 
 	// Notification menu
 	private void notificationMenu() {
-		System.out.println("\n--- 📲 Notifications ---");
-		System.out.println("1. View Notifications");
-		System.out.println("2. Back to Main Menu");
+		System.out.println(WHITE + "\n╔══════════════════════════════╗");
+		System.out.println("║        📲 Notifications      ║");
+		System.out.println("╠══════════════════════════════╣");
+		System.out.println("║ 1. View Notifications        ║");
+		System.out.println("║ 2. Back to Main Menu         ║");
+		System.out.println("╚══════════════════════════════╝" + RESET);
 
 		System.out.print("👉 Choose an option: ");
 		int choice = sc.nextInt();
@@ -249,10 +268,10 @@ public class ClientActivator implements BundleActivator {
 		case 2:
 			return;
 		default:
-			System.out.println("❌ Invalid choice, try again.");
+			System.out.println(RED + "❌ Invalid choice, try again." + RESET);
 		}
 	}
-
+	
 	// View Notifications
 	private void viewNotifications() {
 		List<NotificationModel> notifications = notificationService.getNotifications();
@@ -356,3 +375,5 @@ public class ClientActivator implements BundleActivator {
 		}
 	}
 }
+
+
