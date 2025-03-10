@@ -1,4 +1,4 @@
-package com.fuel.authservice;
+package com.fuel.authpublisher;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

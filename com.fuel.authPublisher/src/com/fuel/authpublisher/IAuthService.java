@@ -1,4 +1,4 @@
-package com.fuel.authservice;
+package com.fuel.authpublisher;
 
 public interface IAuthService {
     boolean login(String username, String password);

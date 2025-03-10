@@ -1,4 +1,4 @@
-package com.fuel.authservice;
+package com.fuel.authpublisher;
 
 import java.util.HashMap;
 import java.util.Map;
