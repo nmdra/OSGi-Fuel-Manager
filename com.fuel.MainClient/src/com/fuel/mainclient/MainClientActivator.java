@@ -72,17 +72,18 @@ public class MainClientActivator implements BundleActivator {
                     System.out.println(YELLOW + "👋 Shutting down Fuel Management System..." + RESET);
 
                     // Stop OSGi bundles and services
-                    try {
-                        if (context != null) {
-                            context.getBundle(0).stop(); // Stops the entire OSGi framework
-                        }
-                    } catch (Exception e) {
-                        System.out.println(RED + "⚠️ Error while stopping services: " + e.getMessage() + RESET);
-                    }
+//                    try {
+//                        if (context != null) {
+//                           context.getBundle(0).stop(); // Stops the entire OSGi framework
+//                        }
+//                    } catch (Exception e) {
+//                        System.out.println(RED + "⚠️ Error while stopping services: " + e.getMessage() + RESET);
+//                    }
 
                     System.out.println(GREEN + "✅ All services stopped. Exiting.." + RESET);
-                    System.exit(0); // Terminates the JVM
-                    break;
+                   // System.exit(0); // Terminates the JVM
+                    this.stop(context);
+                    return;
 
                 default:
                     System.out.println(RED + "⚠️ Invalid choice! Please enter 1, 2, 3, 4 or 5." + RESET);
@@ -94,7 +95,7 @@ public class MainClientActivator implements BundleActivator {
     @Override
     public void stop(BundleContext context) throws Exception {
         System.out.println("📴 Fuel Management System Stopping...");
-        scanner.close();
+//        scanner.close();
     }
 
     // Starts the Fuel Client Service (Manager Dashboard)
@@ -102,6 +103,7 @@ public class MainClientActivator implements BundleActivator {
         try {
             ClientActivator managerClient = new ClientActivator();
             managerClient.start(context); // Start Client Service via OSGi
+        
         } catch (Exception e) {
             System.out.println("❌ Error initializing Client Service: " + e.getMessage());
         }

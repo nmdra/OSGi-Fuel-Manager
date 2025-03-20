@@ -29,6 +29,28 @@ public class ClientActivator implements BundleActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 
+	    // Retrieve Fuel Service Reference
+	    ServiceReference<IFuelService> fuelServiceReference = context.getServiceReference(IFuelService.class);
+	    if (fuelServiceReference != null) {
+	        fuelService = context.getService(fuelServiceReference);
+	        System.out.println("💥 Fuel Service available.");
+	    } else {
+	        System.out.println("⚠️ Fuel Service not available.");
+	        this.stop(context);
+	        return;
+	    }
+
+	    // Retrieve Notification Service Reference
+	    ServiceReference<INotificationService> notificationServiceReference = context.getServiceReference(INotificationService.class);
+	    if (notificationServiceReference != null) {
+	        notificationService = context.getService(notificationServiceReference);
+	        System.out.println("🔔 Notification Service available.");
+	    } else {
+	        System.out.println("⚠️ Notification Service not available.");
+	        this.stop(context);
+	        return;
+	    }
+		
 	    // Retrieve Authentication Service Reference
 	    ServiceReference<IAuthService> authServiceReference = context.getServiceReference(IAuthService.class);
 	    if (authServiceReference != null) {
@@ -45,30 +67,14 @@ public class ClientActivator implements BundleActivator {
 
 	            if (!authService.login(username, password)) {
 	                System.out.println("🚫 Access denied! Exiting...");
+	                this.stop(context);
 	                return; // Exit if authentication fails
 	            }
 	        }
 	    } else {
 	        System.out.println("⚠️ Authentication Service not available. Exiting...");
+	        this.stop(context);
 	        return; // Exit if authentication service is unavailable
-	    }
-
-	    // Retrieve Fuel Service Reference
-	    ServiceReference<IFuelService> fuelServiceReference = context.getServiceReference(IFuelService.class);
-	    if (fuelServiceReference != null) {
-	        fuelService = context.getService(fuelServiceReference);
-	        System.out.println("💥 Fuel Service available.");
-	    } else {
-	        System.out.println("⚠️ Fuel Service not available.");
-	    }
-
-	    // Retrieve Notification Service Reference
-	    ServiceReference<INotificationService> notificationServiceReference = context.getServiceReference(INotificationService.class);
-	    if (notificationServiceReference != null) {
-	        notificationService = context.getService(notificationServiceReference);
-	        System.out.println("🔔 Notification Service available.");
-	    } else {
-	        System.out.println("⚠️ Notification Service not available.");
 	    }
 
 	    // Show menu and interact with services
